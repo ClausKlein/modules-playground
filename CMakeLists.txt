@@ -1,16 +1,15 @@
-cmake_minimum_required(VERSION 3.28..3.29)
-project(provider CXX)
+cmake_minimum_required(VERSION 3.28..4.2)
+project(mytest LANGUAGES CXX)
 
-if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    add_compile_options(-stdlib=libc++)
-    add_link_options(-stdlib=libc++)
-endif()
+# add_library(mylib)
+# target_sources(
+#     mylib
+#     PUBLIC FILE_SET CXX_MODULES FILES lib.cpp
+# )
+# target_compile_features(mylib PUBLIC cxx_std_23)
+# set_target_properties(mylib PROPERTIES CXX_MODULE_STD ON)
 
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
-set(BUILD_SHARED_LIBS OFF)
+add_executable(main main.cpp)
+target_compile_features(main PUBLIC cxx_std_23)
+set_target_properties(main PROPERTIES CXX_MODULE_STD ON)
 
-add_subdirectory(stdlib)
-add_subdirectory(asio-module)
-add_subdirectory(mylib)
-add_subdirectory(charconv)
