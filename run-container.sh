@@ -1,0 +1,1 @@
+docker run -it -v "$(pwd):/modules-pg2" --name modules-gcc15 ubuntu-gcc15-cmake bash
