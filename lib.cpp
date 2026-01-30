@@ -1,12 +1,18 @@
 
 module;
 
-export module mylib;
-import std;
+#include "legacy.hpp"
+#include <array>
+#include <tuple>
 
+export module mylib;
 
 export namespace mylib {
 
-void greet() { std::printf("Hello world!\n"); }
+using mylib::Result;
+using mylib::get;
+using mylib::conv;
+
+inline void dont_discard_result(std::array<int, std::tuple_size_v<Result>>) {}
 
 }
