@@ -6,7 +6,7 @@
 #include <type_traits>
 
 namespace mylib {
-  
+ 
 class Result {
   int value_ {};
 public:

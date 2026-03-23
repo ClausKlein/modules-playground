@@ -1,9 +1,13 @@
-
 module;
 
 #include "legacy.hpp"
+
+#ifdef PLAY_HAS_IMPORT_STD
+import std;
+#else
 #include <array>
 #include <tuple>
+#endif
 
 export module mylib;
 
