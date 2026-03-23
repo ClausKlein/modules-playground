@@ -94,19 +94,10 @@ function(boost_install_library name)
     set(oneValueArgs NAMESPACE EXPORT_NAME DESTINATION)
     set(multiValueArgs TARGETS DEPENDENCIES)
 
-    cmake_parse_arguments(
-        BOOST
-        "${options}"
-        "${oneValueArgs}"
-        "${multiValueArgs}"
-        ${ARGN}
-    )
+    cmake_parse_arguments(BOOST "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
     if(NOT BOOST_TARGETS)
-        message(
-            FATAL_ERROR
-            "boost_install_library(${name}): TARGETS must be specified"
-        )
+        message(FATAL_ERROR "boost_install_library(${name}): TARGETS must be specified")
     endif()
 
     if(CMAKE_SKIP_INSTALL_RULES)
@@ -150,10 +141,7 @@ function(boost_install_library name)
     # XXX string(REPLACE "boost_" "" install_component_name "${name}")
     # XXX set(install_component_name "boost")
     string(TOLOWER ${BOOST_NAMESPACE} install_component_name)
-    message(
-        VERBOSE
-        "boost-install-library(${name}): COMPONENT '${install_component_name}'"
-    )
+    message(VERBOSE "boost-install-library(${name}): COMPONENT '${install_component_name}'")
     set(_include_install_dir
         DESTINATION
         ${CMAKE_INSTALL_INCLUDEDIR}/${install_component_name}${_version_suffix}
@@ -164,10 +152,7 @@ function(boost_install_library name)
     # --------------------------------------------------
     foreach(_tgt IN LISTS BOOST_TARGETS)
         if(NOT TARGET "${_tgt}")
-            message(
-                WARNING
-                "boost_install_library(${name}): '${_tgt}' is not a target"
-            )
+            message(WARNING "boost_install_library(${name}): '${_tgt}' is not a target")
             continue()
         endif()
 
@@ -184,10 +169,7 @@ function(boost_install_library name)
         # XXX list(GET name_parts -1 component_name)
 
         set(component_name "${_tgt}")
-        set_target_properties(
-            "${_tgt}"
-            PROPERTIES EXPORT_NAME "${component_name}"
-        )
+        set_target_properties("${_tgt}" PROPERTIES EXPORT_NAME "${component_name}")
         message(
             VERBOSE
             "boost_install_library(${name}): EXPORT_NAME ${component_name} for TARGET '${_tgt}'"
@@ -195,11 +177,7 @@ function(boost_install_library name)
 
         # Get the list of interface header sets, exact one expected!
         set(_install_header_set_args)
-        get_target_property(
-            _available_header_sets
-            ${_tgt}
-            INTERFACE_HEADER_SETS
-        )
+        get_target_property(_available_header_sets ${_tgt} INTERFACE_HEADER_SETS)
         if(_available_header_sets)
             message(
                 VERBOSE
@@ -229,40 +207,31 @@ function(boost_install_library name)
             install(
                 TARGETS "${_tgt}"
                 EXPORT ${BOOST_EXPORT_NAME}
-                ARCHIVE
-                    ${_lib_install_dir}
-                    COMPONENT "${install_component_name}_Development"
+                ARCHIVE ${_lib_install_dir} COMPONENT "${install_component_name}_Development"
                 LIBRARY
                     ${_lib_install_dir}
                     COMPONENT "${install_component_name}_Runtime"
                     NAMELINK_COMPONENT "${install_component_name}_Development"
-                RUNTIME
-                    ${_bin_install_dir}
-                    COMPONENT "${install_component_name}_Runtime"
+                RUNTIME ${_bin_install_dir} COMPONENT "${install_component_name}_Runtime"
                 ${_install_header_set_args}
                 FILE_SET ${_module_sets}
                     DESTINATION "${BOOST_DESTINATION}"
                     COMPONENT "${install_component_name}_Development"
                 # NOTE: There's currently no convention for this location! CK
                 CXX_MODULES_BMI
-                    DESTINATION
-                        ${_config_install_dir}/bmi-${CMAKE_CXX_COMPILER_ID}_$<CONFIG>
+                    DESTINATION ${_config_install_dir}/bmi-${CMAKE_CXX_COMPILER_ID}_$<CONFIG>
                     COMPONENT "${install_component_name}_Development"
             )
         else()
             install(
                 TARGETS "${_tgt}"
                 EXPORT ${BOOST_EXPORT_NAME}
-                ARCHIVE
-                    ${_lib_install_dir}
-                    COMPONENT "${install_component_name}_Development"
+                ARCHIVE ${_lib_install_dir} COMPONENT "${install_component_name}_Development"
                 LIBRARY
                     ${_lib_install_dir}
                     COMPONENT "${install_component_name}_Runtime"
                     NAMELINK_COMPONENT "${install_component_name}_Development"
-                RUNTIME
-                    ${_bin_install_dir}
-                    COMPONENT "${install_component_name}_Runtime"
+                RUNTIME ${_bin_install_dir} COMPONENT "${install_component_name}_Runtime"
                 ${_install_header_set_args}
             )
         endif()
@@ -296,11 +265,7 @@ function(boost_install_library name)
     set(_pkg_var "${_pkg_prefix}_INSTALL_CONFIG_FILE_PACKAGE")
 
     if(NOT DEFINED ${_pkg_var})
-        set(${_pkg_var}
-            OFF
-            CACHE BOOL
-            "Install CMake package config files for ${name}"
-        )
+        set(${_pkg_var} OFF CACHE BOOL "Install CMake package config files for ${name}")
     endif()
 
     set(_install_config OFF)
@@ -319,10 +284,7 @@ function(boost_install_library name)
     # ----------------------------------------
     set(_boost_find_deps "")
     foreach(dep IN ITEMS ${BOOST_DEPENDENCIES})
-        message(
-            VERBOSE
-            "boost-install-library(${name}): Add find_dependency(${dep})"
-        )
+        message(VERBOSE "boost-install-library(${name}): Add find_dependency(${dep})")
         string(APPEND _boost_find_deps "find_dependency(${dep})\n")
     endforeach()
     set(BOOST_FIND_DEPENDENCIES "${_boost_find_deps}")

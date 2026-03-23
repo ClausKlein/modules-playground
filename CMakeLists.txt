@@ -24,10 +24,7 @@ if(${CMAKE_CXX_STANDARD} IN_LIST CMAKE_CXX_COMPILER_IMPORT_STD)
     set(CMAKE_CXX_MODULE_STD 1)
     message(STATUS "Using `import std;`")
 else()
-    message(
-        WARNING
-        "`import std;` is not available for C++${CMAKE_CXX_STANDARD}"
-    )
+    message(WARNING "`import std;` is not available for C++${CMAKE_CXX_STANDARD}")
     set(CMAKE_CXX_MODULE_STD)
 endif()
 
@@ -39,18 +36,17 @@ target_compile_features(play_mylib PUBLIC cxx_std_23)
 
 if(CMAKE_CXX_MODULE_STD)
     target_compile_definitions(play_mylib PUBLIC PLAY_HAS_IMPORT_STD)
-    set_target_properties(
-        play_mylib
-        PROPERTIES CXX_MODULE_STD ${CMAKE_CXX_MODULE_STD}
-    )
+    set_target_properties(play_mylib PROPERTIES CXX_MODULE_STD ${CMAKE_CXX_MODULE_STD})
     message(STATUS "Build play with target PROPERTY CXX_MODULE_STD ON")
 endif()
 
 enable_testing()
+
+add_subdirectory(examples)
 add_subdirectory(tests)
 
 #======================================================================
 # install
 #======================================================================
 include(cmake/boost-install-library.cmake)
-boost_install_library(modules_playground TARGETS play_mylib NAMESPACE play)
+boost_install_library(modules_playground TARGETS play_mylib play_hello NAMESPACE play)

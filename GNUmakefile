@@ -80,7 +80,8 @@ distclean: # XXX clean
 	find . -name '*~' -delete
 
 format: # XXX distclean
-	git ls-files ::*.cmake ::*CMakeLists.txt | xargs gersemi -i --no-warn-about-unknown-commands
+	git ls-files ::*.cmake ::*CMakeLists.txt | xargs gersemi -i --line-length 102 \
+  --no-warn-about-unknown-commands
 	# XXX git ls-files ::*.cpp ::*.cppm ::*.hpp | xargs clang-format -i
 
 

@@ -16,11 +16,15 @@ endif()
 add_executable(main main.cpp)
 target_compile_features(main PUBLIC cxx_std_23)
 target_link_libraries(main PUBLIC play::play_mylib)
-set_target_properties(main PROPERTIES CXX_MODULE_STD ${CMAKE_CXX_MODULE_STD})
 
 if(CMAKE_CXX_MODULE_STD)
-    set_property(TARGET main PROPERTY CXX_MODULE_STD ON)
+    set_target_properties(main PROPERTIES CXX_MODULE_STD ${CMAKE_CXX_MODULE_STD})
     message(STATUS "Build main with target PROPERTY CXX_MODULE_STD ON")
 endif()
 
 add_test(NAME main COMMAND main)
+
+add_executable(test.user user.cpp)
+target_link_libraries(test.user PRIVATE play::play_hello)
+set_target_properties(test.user PROPERTIES CXX_MODULE_STD ${CMAKE_CXX_MODULE_STD})
+add_test(NAME test.user COMMAND test.user)
