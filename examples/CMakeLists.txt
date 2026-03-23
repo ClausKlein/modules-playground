@@ -16,13 +16,13 @@ target_sources(
 )
 target_compile_features(play_hello PRIVATE cxx_std_23)
 
-if(CMAKE_CXX_MODULE_STD)
-    target_compile_definitions(play_hello PUBLIC PLAY_HAS_IMPORT_STD)
-    set_target_properties(play_hello PROPERTIES CXX_MODULE_STD ${CMAKE_CXX_MODULE_STD})
-    message(STATUS "Build play_hello with target PROPERTY CXX_MODULE_STD ON")
-endif()
-
 add_executable(example.user ../tests/user.cpp)
 target_link_libraries(example.user PRIVATE play_hello)
-set_target_properties(example.user PROPERTIES CXX_MODULE_STD ${CMAKE_CXX_MODULE_STD})
 add_test(NAME example.user COMMAND example.user)
+
+if(CMAKE_CXX_MODULE_STD)
+    target_compile_definitions(play_hello PUBLIC PLAY_HAS_IMPORT_STD)
+    set_target_properties(example.user PROPERTIES CXX_MODULE_STD ON)
+    set_target_properties(play_hello PROPERTIES CXX_MODULE_STD ON)
+    message(STATUS "Build play_hello with target PROPERTY CXX_MODULE_STD ON")
+endif()

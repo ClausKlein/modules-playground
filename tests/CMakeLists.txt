@@ -13,18 +13,18 @@ if(PROJECT_IS_TOP_LEVEL)
     enable_testing()
 endif()
 
-add_executable(main main.cpp)
-target_compile_features(main PUBLIC cxx_std_23)
-target_link_libraries(main PUBLIC play::play_mylib)
+add_executable(test.main main.cpp)
+target_compile_features(test.main PUBLIC cxx_std_23)
+target_link_libraries(test.main PUBLIC play::play_mylib)
 
-if(CMAKE_CXX_MODULE_STD)
-    set_target_properties(main PROPERTIES CXX_MODULE_STD ${CMAKE_CXX_MODULE_STD})
-    message(STATUS "Build main with target PROPERTY CXX_MODULE_STD ON")
-endif()
-
-add_test(NAME main COMMAND main)
+add_test(NAME test.main COMMAND test.main)
 
 add_executable(test.user user.cpp)
 target_link_libraries(test.user PRIVATE play::play_hello)
-set_target_properties(test.user PROPERTIES CXX_MODULE_STD ${CMAKE_CXX_MODULE_STD})
 add_test(NAME test.user COMMAND test.user)
+
+if(CMAKE_CXX_MODULE_STD)
+    set_target_properties(test.user PROPERTIES CXX_MODULE_STD ON)
+    set_target_properties(test.main PROPERTIES CXX_MODULE_STD ON)
+    message(STATUS "Build test.main with target PROPERTY CXX_MODULE_STD ON")
+endif()
