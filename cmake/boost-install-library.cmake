@@ -135,7 +135,7 @@ function(boost_install_library name)
     endif()
 
     if(NOT BOOST_DESTINATION)
-        set(BOOST_DESTINATION "${_config_install_dir}")
+        set(BOOST_DESTINATION "${_config_install_dir}/modules")
     endif()
 
     # XXX string(REPLACE "boost_" "" install_component_name "${name}")

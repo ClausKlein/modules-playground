@@ -30,8 +30,9 @@ endif()
 
 add_library(play_mylib)
 add_library(play::play_mylib ALIAS play_mylib)
-target_sources(play_mylib PUBLIC FILE_SET CXX_MODULES FILES lib.cpp)
-target_sources(play_mylib PUBLIC FILE_SET HEADERS FILES legacy.hpp)
+target_sources(play_mylib PUBLIC FILE_SET CXX_MODULES FILES mylib.cppm)
+# target_sources(play_mylib PUBLIC FILE_SET CXX_MODULES FILES lib.cpp)
+# target_sources(play_mylib PUBLIC FILE_SET HEADERS FILES legacy.hpp)
 target_compile_features(play_mylib PUBLIC cxx_std_23)
 
 if(CMAKE_CXX_MODULE_STD)

@@ -33,6 +33,9 @@ import std;
 // not with g++ # include <ctime>    // time/clocks macros (same as C)
 #endif
 
+// NOTE: Including headers after import is not well-supported from clang++! CK
+import mylib;
+
 int main() {
 #if defined(__APPLE__) && defined(NULL)
     // use current time as seed for random generator
@@ -45,5 +48,14 @@ int main() {
               // NOLINTNEXTLINE
               << static_cast<double>(std::rand()) / RAND_MAX << '\n';
     return EXIT_SUCCESS;
+#else
+    {
+        mylib::Result r;
+        mylib::get<0>(r) = 42;
+        auto [x] = r;  // structured binding works
+        std::cout << x << "\n";
+
+        mylib::conv("hello");  // satisfies convertible_to<string_view>
+    }
 #endif
 }

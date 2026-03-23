@@ -82,7 +82,7 @@ distclean: # XXX clean
 format: # XXX distclean
 	git ls-files ::*.cmake ::*CMakeLists.txt | xargs gersemi -i --line-length 102 \
   --no-warn-about-unknown-commands
-	# XXX git ls-files ::*.cpp ::*.cppm ::*.hpp | xargs clang-format -i
+	git ls-files ::*.cpp ::*.cppm ::*.hpp | xargs clang-format -i
 
 
 tests: tests/CMakeLists.txt
