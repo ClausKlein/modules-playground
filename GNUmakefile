@@ -56,7 +56,7 @@ else ifeq (${hostSystemName},Linux)
   endif
 endif
 
-.PHONY: all format install tests distclean
+.PHONY: all install tests distclean format
 
 all: __build/compile_commands.json
 	ln -sf $< .
@@ -75,16 +75,6 @@ __build/compile_commands.json: CMakeLists.txt GNUmakefile
 install: __build/cmake_install.cmake
 	cmake --install __build
 
-distclean: # XXX clean
-	rm -rf .cache __build stagedir compile_commands.json
-	find . -name '*~' -delete
-
-format: # XXX distclean
-	git ls-files ::*.cmake ::*CMakeLists.txt | xargs gersemi -i --line-length 102 \
-  --no-warn-about-unknown-commands
-	git ls-files ::*.cpp ::*.cppm ::*.hpp | xargs clang-format -i
-
-
 tests: tests/CMakeLists.txt
 	cmake --version
 	cmake -S tests -B __build/find-tests -G Ninja \
@@ -97,6 +87,15 @@ tests: tests/CMakeLists.txt
 	ln -sf __build/find-tests/compile_commands.json .
 	ninja -C __build/find-tests
 	ninja -C __build/find-tests test
+
+distclean: # XXX clean
+	rm -rf .cache __build stagedir compile_commands.json
+	find . -name '*~' -delete
+
+format: # XXX distclean
+	git ls-files ::*.cmake ::*CMakeLists.txt | xargs gersemi -i --line-length 102 \
+  --no-warn-about-unknown-commands
+	git ls-files ::*.cpp ::*.cppm ::*.hpp | xargs clang-format -i
 
 # Anything we don't know how to __build will use this rule.
 % ::

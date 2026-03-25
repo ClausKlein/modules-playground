@@ -197,12 +197,12 @@ function(boost_install_library name)
             set(_install_header_set_args FILE_SET HEADERS) # NOTE: empty FILE_SET in this case! CK
         endif()
 
-        # Detect presence of C++ module file sets, exact one expected!
-        get_target_property(_module_sets "${_tgt}" CXX_MODULE_SETS)
+        # Detect presence of PUBLIC C++ module file sets, exact one expected!
+        get_target_property(_module_sets "${_tgt}" INTERFACE_CXX_MODULE_SETS)
         if(_module_sets)
             message(
                 VERBOSE
-                "boost-install-library(${name}): '${_tgt}' has CXX_MODULE_SETS=${_module_sets}"
+                "boost-install-library(${name}): '${_tgt}' has INTERFACE_CXX_MODULE_SETS=${_module_sets}"
             )
             install(
                 TARGETS "${_tgt}"
